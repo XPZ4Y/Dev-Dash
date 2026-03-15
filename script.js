@@ -1,13 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
     const eventDetailsContainer = document.getElementById('event-details');
     const registerButton = document.getElementById('register-btn');
+    const googleSignInContainer = document.getElementById('google-signin-container');
+    const themeSwitch = document.getElementById('checkbox');
     const eventId = '69b69679c34207e691c1f576';
+    // IMPORTANT: Replace with your actual Google Client ID
+    let CLIENT_ID="{}"
 
+    // --- Theme Switcher ---
+    themeSwitch.addEventListener('change', () => {
+        if (themeSwitch.checked) {
+            document.body.classList.add('dark-mode');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.body.classList.remove('dark-mode');
+            localStorage.setItem('theme', 'light');
+        }
+    });
+
+    function loadTheme() {
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeSwitch.checked = true;
+        }
+    }
+
+
+    // --- Event & Auth Logic ---
     async function displayEvent() {
         try {
             const event = await FidaAPI.events.getOne(eventId);
             let eventHtml = `
-                <h2>${event.name}</h2>
                 <p>${event.description}</p>
                 <p><strong>Date:</strong> ${new Date(event.date).toLocaleDateString()}</p>
                 <p><strong>Location:</strong> ${event.location}</p>
@@ -24,30 +48,62 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    displayEvent();
+    async function handleCredentialResponse(response) {
+        try {
+            const authResponse = await FidaAPI.auth.googleLogin(response.credential);
+            if (authResponse.token) {
+                localStorage.setItem('fida_token', authResponse.token);
+                updateLoginUI();
+            } else {
+                alert('Sign-in failed. Please try again.');
+            }
+        } catch (error) {
+            alert('Sign-in failed. Please try again.');
+            console.error('Sign-in error:', error);
+        }
+    }
+
+    function updateLoginUI() {
+        const token = localStorage.getItem('fida_token');
+        googleSignInContainer.innerHTML = ''; // Clear the container
+
+        if (token) {
+            // User is logged in
+            FidaAPI.auth.getMe().then(user => {
+                const welcomeEl = document.createElement('div');
+                welcomeEl.innerHTML = `
+                    <span>Welcome, ${user.name}!</span>
+                    <button id="logout-btn">Logout</button>
+                `;
+                googleSignInContainer.appendChild(welcomeEl);
+                document.getElementById('logout-btn').addEventListener('click', logout);
+            }).catch(() => {
+                // If getMe fails, the token is likely invalid
+                logout();
+            });
+        } else {
+            // User is not logged in
+            google.accounts.id.initialize({
+                client_id: CLIENT_ID,
+                callback: handleCredentialResponse
+            });
+            google.accounts.id.renderButton(
+                googleSignInContainer,
+                { theme: "outline", size: "large" }
+            );
+        }
+    }
+    
+    function logout() {
+        localStorage.removeItem('fida_token');
+        updateLoginUI();
+    }
 
 
     async function registerForEvent() {
         const token = localStorage.getItem('fida_token');
         if (!token) {
             alert('Please sign in to register for the event.');
-            // In a real application, you would redirect to a login page.
-            // For now, we'll simulate a login by setting a dummy token.
-            const googleToken = prompt('Enter your Google token to "sign in":');
-            if (googleToken) {
-                try {
-                    const authResponse = await FidaAPI.auth.googleLogin(googleToken);
-                    if (authResponse.token) {
-                        localStorage.setItem('fida_token', authResponse.token);
-                        alert('You are now signed in. Please click register again.');
-                    } else {
-                        alert('Sign-in failed. Please try again.');
-                    }
-                } catch (error) {
-                    alert('Sign-in failed. Please try again.');
-                    console.error('Sign-in error:', error);
-                }
-            }
             return;
         }
 
@@ -89,5 +145,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // --- Initializations ---
+    FidaAPI.auth.ax001().then(() => {
+        CLIENT_ID = window.googleClientId;
+        loadTheme();
+        displayEvent();
+        updateLoginUI();
+    }).catch(error => {
+        console.error('Failed to load config:', error);
+        // Fallback or error handling
+        loadTheme();
+        displayEvent();
+        // Don't try to initialize Google Sign-In if CLIENT_ID is not set
+    });
+    
     registerButton.addEventListener('click', registerForEvent);
 });
+

@@ -37,6 +37,18 @@ FidaAPI = {
 
             if (!res.ok) throw new Error('Session invalid');
             return await res.json();
+        },
+
+        async ax001() {
+            try {
+                // Ensure existing API path is hit
+                const res = await fetch(`${FidaAPI.BASE_URL}/auth/config`);
+                const config = await res.json();
+                
+                window.googleClientId = config.googleClientId
+            } catch (e) {
+                console.error("Config load error (Backend might be offline)", e);
+            }
         }
     },
 
