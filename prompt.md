@@ -1,7 +1,7 @@
 # Prompt
 
 ## Objective
-Now, in module-backend folder, is a communication protocol with the server.
+Now, in module-backend/ folder, is a API communication protocol with the server.
 
 Objective: To use the GigByCity server's api into our website for a simple hackathon pipeline:
 
@@ -17,7 +17,7 @@ Scripting is disabled for you.
 
 ## Definition of success:
 1. The website runs
-2. Api for joining the event is used, and registering is used. The user is prompted to sign in first and then register..
+2. Api file for joining the event is used, and registering is used. The user is prompted to sign in first and then register..
 3. User is guided in `spoonfeed.md` on what to do to host on vercel, and about updating the vercel link in the gigbycity server, and google authentication. In simple language.
 4. (edge case) In case of API being unclear, It is clearly communicated to the user.
 
