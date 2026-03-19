@@ -116,7 +116,7 @@ export default function Highlights() {
               <div className="absolute inset-0 bg-brand-black/60 group-hover:bg-brand-black/10 transition-all z-10 duration-500"></div>
               <img
                 src="/assets/2.png"
-                alt="Project Presentation"
+                alt="Codinggggg"
                 className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src =
@@ -124,7 +124,7 @@ export default function Highlights() {
                 }}
               />
               <div className="absolute bottom-0 left-0 bg-white text-brand-black px-5 sm:px-8 py-3 sm:py-4 font-black uppercase text-xs sm:text-sm md:text-lg z-20 transform translate-y-6 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 border-t-[3px] border-r-[3px] border-brand-red">
-                Project Presentation
+                immersed in Coding
               </div>
             </div>
             {/* Carousel Item 3 */}
@@ -147,7 +147,7 @@ export default function Highlights() {
             <div className="snap-center shrink-0 w-[85vw] sm:w-[400px] md:w-[450px] h-[250px] sm:h-[350px] md:h-[450px] relative group border-[3px] sm:border-[5px] border-white hover:border-brand-red transition-all duration-300 cursor-pointer shadow-[6px_6px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-brutal-red hover:-translate-y-2 hover:-rotate-1">
               <div className="absolute inset-0 bg-brand-black/60 group-hover:bg-brand-black/10 transition-all z-10 duration-500"></div>
               <img
-                src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                src="/assets/4.png"
                 alt="Hackathon Squad"
                 className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
                 onError={(e) => {
