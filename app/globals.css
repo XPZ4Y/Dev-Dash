@@ -155,3 +155,8 @@
   .reveal-delay-2 { transition-delay: 0.2s; }
   .reveal-delay-3 { transition-delay: 0.3s; }
 }
+
+.highlight {
+  color: #ffc700; /* A bright yellow for highlighting */
+  font-weight: bold;
+}

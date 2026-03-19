@@ -10,6 +10,7 @@ import Bounties from "./components/Bounties";
 import Footer from "./components/Footer";
 import RegistrationModal from "./components/RegistrationModal";
 import BountyModal, { BountyData } from "./components/BountyModal";
+import Rules from "./components/Rules";
 
 const BOUNTIES_DATA: Record<string, BountyData> = {
   health: {
@@ -81,12 +82,18 @@ export default function Home() {
         </div>
       </div>
 
-      <Navbar onRegisterClick={() => setIsRegisterOpen(true)} />
+      <Navbar onRegisterClick={() => setIsRegisterOpen(true)} onRulesClick={() => {
+        const rulesSection = document.getElementById("rules");
+        if (rulesSection) {
+          rulesSection.scrollIntoView({ behavior: "smooth" });
+        }
+      }} />
       <Hero onRegisterClick={() => setIsRegisterOpen(true)} />
       <Marquee />
       <About />
       <Highlights />
       <Bounties onBountyClick={handleOpenBounty} />
+      <Rules />
       <Footer />
 
       <RegistrationModal

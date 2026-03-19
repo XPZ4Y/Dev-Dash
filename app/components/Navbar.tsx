@@ -5,9 +5,10 @@ import Link from "next/link";
 
 interface NavbarProps {
   onRegisterClick: () => void;
+  onRulesClick: () => void;
 }
 
-export default function Navbar({ onRegisterClick }: NavbarProps) {
+export default function Navbar({ onRegisterClick, onRulesClick }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -57,6 +58,9 @@ export default function Navbar({ onRegisterClick }: NavbarProps) {
           <Link href="#tracks" className="hover:text-brand-red transition-colors">
             Bounties
           </Link>
+          <button onClick={onRulesClick} className="hover:text-brand-red transition-colors">
+            RULES
+          </button>
           <button
             onClick={onRegisterClick}
             className="btn-solid px-6 py-2.5 rounded-none"
@@ -98,6 +102,15 @@ export default function Navbar({ onRegisterClick }: NavbarProps) {
         >
           Bounties
         </Link>
+        <button
+          onClick={() => {
+            closeMobileMenu();
+            onRulesClick();
+          }}
+          className="text-lg font-black uppercase text-brand-black hover:text-brand-red mobile-link py-2 border-b-2 border-gray-100 text-left"
+        >
+          Rules
+        </button>
         <button
           onClick={() => {
             closeMobileMenu();

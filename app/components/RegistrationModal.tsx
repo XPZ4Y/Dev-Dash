@@ -183,7 +183,7 @@ export default function RegistrationModal({ isOpen, onClose }: RegistrationModal
               Join FutureSprint
             </h3>
             <p className="font-mono text-[10px] sm:text-xs text-brand-red font-bold uppercase tracking-[0.2em]">
-              {step === "payment" ? "Registration Fee Payment" : "Execute Registration Protocol"}
+              {step === "payment" ? "Registration Fee Payment" : "Execute Registration Protocol & pay 50 rs per person"}
             </p>
           </div>
 
@@ -373,10 +373,10 @@ export default function RegistrationModal({ isOpen, onClose }: RegistrationModal
           {step === "payment" && (
             <div className="flex flex-col items-center justify-center py-6 text-center relative z-10 animate-in fade-in zoom-in">
               <h4 className="text-xl sm:text-2xl font-black uppercase tracking-tight mb-4">
-                Registration Fee Validation
+                Registration Fee Validation <p>(50rs per person)</p>
               </h4>
               <p className="text-brand-darkGray text-sm font-medium mb-6 max-w-md">
-                Scan the QR code below using your preferred UPI app to complete the registration fee payment. Your registration will be manually verified.
+                Scan the QR code below using your preferred UPI app to complete the registration fee payment. Your registration will be manually verified. Do mention your <b>registration number</b> in the message.
               </p>
               
               <div className="bg-gray-100 p-4 border-[3px] border-brand-black shadow-brutal-md mb-8 inline-block">
