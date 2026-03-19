@@ -60,7 +60,11 @@ export default function About() {
               <strong className="text-brand-black border-b-2 border-brand-red">
                 School Of Engineering, St Aloysius. 
               </strong>
-               .Hosted by the School of Engineering and the School of Information Science and Technology.
+              {" "}in collaboration with {" "}
+              <strong className="text-brand-black border-b-2 border-brand-red">
+                School of School of Information Science and Technology, AIMIT
+              </strong>
+               
             </p>
             <p className="text-brand-darkGray text-base sm:text-lg leading-relaxed font-medium">
               Marked by its massive hype, the presence of multiple MNCs, and the
@@ -89,7 +93,7 @@ export default function About() {
             </div>
             <div className="border-[3px] border-brand-black p-8 sm:p-10 flex flex-col justify-center items-center text-center aspect-[4/3] sm:aspect-square bg-brand-black sm:mt-16 shadow-brutal-red transition-all hover:-translate-y-2 cursor-default w-full group">
               <span className="text-5xl sm:text-6xl font-black text-white mb-1 sm:mb-2 group-hover:scale-110 transition-transform">
-                25
+                26
               </span>
               <span className="text-xs sm:text-sm font-bold text-brand-red uppercase tracking-[0.2em] mt-2">
                 March

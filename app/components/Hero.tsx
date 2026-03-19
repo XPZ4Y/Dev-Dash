@@ -79,7 +79,7 @@ export default function Hero({ onRegisterClick }: HeroProps) {
         <div className="w-full flex flex-col items-start bg-white/95 backdrop-blur-md p-6 sm:p-8 md:p-10 border-4 border-brand-black shadow-brutal-lg sm:shadow-brutal-xl relative z-20 reveal active">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 border-2 border-brand-red text-brand-red font-mono text-[10px] sm:text-xs font-bold uppercase mb-6 sm:mb-8 bg-white/50 backdrop-blur-sm shadow-brutal-red transition-all">
             <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-brand-red animate-pulse"></span>
-            SYS.DATE: March 25, 2026
+            SYS.DATE: March 26, 2026
           </div>
 
           <h1 className="text-[2.75rem] leading-[0.95] sm:text-6xl md:text-7xl lg:text-[5rem] font-black mb-4 sm:mb-6 tracking-tighter uppercase text-brand-black relative mt-2 sm:mt-0 w-full break-words">
