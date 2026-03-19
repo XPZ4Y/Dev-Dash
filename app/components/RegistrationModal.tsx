@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
+
 
 interface RegistrationModalProps {
   isOpen: boolean;
@@ -22,7 +22,10 @@ const DEPARTMENTS: Record<string, string[]> = {
 
 const STORAGE_KEY = "futuresprint_registration_draft";
 
+import { useToast } from "../hooks/useToast";
+
 export default function RegistrationModal({ isOpen, onClose }: RegistrationModalProps) {
+  const { showToast } = useToast();
   const [leader, setLeader] = useState({
     firstName: "",
     lastName: "",
@@ -36,7 +39,7 @@ export default function RegistrationModal({ isOpen, onClose }: RegistrationModal
   });
   const [members, setMembers] = useState(() => [{ id: Date.now(), name: "", registerNumber: "" }]);
   
-  const [step, setStep] = useState<"form" | "payment" | "success">("form");
+  const [step, setStep] = useState<"form" | "payment">("form");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -69,9 +72,6 @@ export default function RegistrationModal({ isOpen, onClose }: RegistrationModal
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
-      if (step === "success") {
-        setStep("form"); // Reset to form if reopened after success
-      }
       setErrorMsg("");
     } else {
       document.body.style.overflow = "";
@@ -79,7 +79,7 @@ export default function RegistrationModal({ isOpen, onClose }: RegistrationModal
     return () => {
       document.body.style.overflow = "";
     };
-  }, [isOpen, step]);
+  }, [isOpen]);
 
   const addMember = () => {
     if (members.length < 3) {
@@ -130,7 +130,8 @@ export default function RegistrationModal({ isOpen, onClose }: RegistrationModal
       const data = await res.json();
 
       if (res.ok && data.success) {
-        setStep("success");
+        showToast("You have successfully registered for the event.", "success");
+        onClose(); // Close the modal on successful submission
         // Clear local storage on success
         if (typeof window !== "undefined") {
           localStorage.removeItem(STORAGE_KEY);
@@ -138,6 +139,7 @@ export default function RegistrationModal({ isOpen, onClose }: RegistrationModal
         // Reset state
         setLeader({ firstName: "", lastName: "", email: "", github: "", bounty: "health", registerNumber: "", abstract: "", department: "", subdepartment: "" });
         setMembers([{ id: Date.now(), name: "", registerNumber: "" }]);
+        setStep("form");
       } else {
         setErrorMsg(data.message || "Failed to register.");
         setStep("form"); // Go back to form if error
@@ -220,18 +222,20 @@ export default function RegistrationModal({ isOpen, onClose }: RegistrationModal
                     <input type="text" name="registerNumber" value={leader.registerNumber} onChange={handleLeaderChange} required className="brutal-input w-full bg-brand-gray py-3 sm:py-3.5 px-4 text-sm sm:text-base text-brand-black focus:outline-none font-semibold focus:bg-white placeholder-gray-400" placeholder="Ex: 234050" />
                   </div>
                 </div>
-
+                {/*
                 <div className="space-y-1.5 sm:space-y-2 mb-4 sm:mb-6">
-                  <label className="text-[10px] sm:text-xs font-bold text-brand-darkGray uppercase tracking-widest">GitHub / Portfolio URL</label>
-                  <input type="url" name="github" value={leader.github} onChange={handleLeaderChange} required className="brutal-input w-full bg-brand-gray py-3 sm:py-3.5 px-4 text-sm sm:text-base text-brand-black focus:outline-none font-semibold focus:bg-white placeholder-gray-400" placeholder="https://github.com/janedoe" />
+                  <label className="text-[10px] sm:text-xs font-bold text-brand-darkGray uppercase tracking-widest">GitHub / Portfolio URL (Optional)</label>
+                  <input type="url" name="github" value={leader.github} onChange={handleLeaderChange} className="brutal-input w-full bg-brand-gray py-3 sm:py-3.5 px-4 text-sm sm:text-base text-brand-black focus:outline-none font-semibold focus:bg-white placeholder-gray-400" placeholder="https://github.com/janedoe" />
                 </div>
+                */}
+                
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
                   <div className="space-y-1.5 sm:space-y-2">
-                    <label className="text-[10px] sm:text-xs font-bold text-brand-darkGray uppercase tracking-widest">Department</label>
+                    <label className="text-[10px] sm:text-xs font-bold text-brand-darkGray uppercase tracking-widest">School</label>
                     <div className="relative">
                       <select name="department" value={leader.department} onChange={handleDepartmentChange} required className="brutal-input w-full bg-brand-gray py-3 sm:py-3.5 px-4 text-sm sm:text-base text-brand-black focus:outline-none font-semibold focus:bg-white appearance-none pr-10">
-                        <option value="">Select Department</option>
+                        <option value="">Select School</option>
                         {Object.keys(DEPARTMENTS).map((dept) => (
                           <option key={dept} value={dept}>{dept}</option>
                         ))}
@@ -242,7 +246,7 @@ export default function RegistrationModal({ isOpen, onClose }: RegistrationModal
                     </div>
                   </div>
                   <div className="space-y-1.5 sm:space-y-2">
-                    <label className="text-[10px] sm:text-xs font-bold text-brand-darkGray uppercase tracking-widest">Sub-Department</label>
+                    <label className="text-[10px] sm:text-xs font-bold text-brand-darkGray uppercase tracking-widest">Course</label>
                     <div className="relative">
                       <select name="subdepartment" value={leader.subdepartment} onChange={handleLeaderChange} required disabled={!leader.department} className="brutal-input w-full bg-brand-gray py-3 sm:py-3.5 px-4 text-sm sm:text-base text-brand-black focus:outline-none font-semibold focus:bg-white appearance-none pr-10 disabled:opacity-50">
                         <option value="">Select Option</option>
@@ -325,10 +329,12 @@ export default function RegistrationModal({ isOpen, onClose }: RegistrationModal
                       onChange={handleLeaderChange}
                       className="brutal-input w-full bg-white py-3.5 sm:py-4 px-4 text-sm sm:text-base text-brand-black focus:outline-none cursor-pointer appearance-none font-semibold pr-10"
                     >
+                      <option value="other">Other</option>
                       <option value="health">Healthcare</option>
                       <option value="fintech">Fintech</option>
                       <option value="sustain">Sustainable Tech</option>
                       <option value="agri">Agriculture</option>
+
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-brand-black">
                       <i className="fa-solid fa-chevron-down"></i>
@@ -409,27 +415,6 @@ export default function RegistrationModal({ isOpen, onClose }: RegistrationModal
                   )}
                 </button>
               </div>
-            </div>
-          )}
-
-          {step === "success" && (
-            <div className="flex flex-col items-center justify-center py-10 sm:py-16 text-center relative z-10 animate-in fade-in zoom-in">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-brand-black flex items-center justify-center mb-6 sm:mb-8 text-white shadow-brutal-red border-[3px] border-brand-black">
-                <i className="fa-solid fa-check text-2xl sm:text-4xl"></i>
-              </div>
-              <h4 className="text-2xl sm:text-3xl font-black uppercase tracking-tight mb-2 sm:mb-3">
-                Application Received
-              </h4>
-              <p className="text-brand-darkGray text-sm sm:text-base font-medium mb-8 sm:mb-10 px-4">
-                Data successfully committed to the mainframe.<br className="hidden sm:block" />{" "}
-                Payment manual verification is pending. Awaiting email confirmation.
-              </p>
-              <button
-                onClick={onClose}
-                className="btn-solid px-8 py-3.5 sm:px-10 sm:py-4 text-xs sm:text-sm uppercase tracking-widest"
-              >
-                Close Terminal
-              </button>
             </div>
           )}
         </div>

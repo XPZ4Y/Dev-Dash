@@ -23,6 +23,8 @@ export const metadata: Metadata = {
   description: "Join developers, designers, and innovators for a weekend of creation, competition, and fun.",
 };
 
+import { ToastProvider } from "./hooks/useToast";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -40,7 +42,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${jetbrainsMono.variable} ${permanentMarker.variable} antialiased selection:bg-brand-red selection:text-white w-full overflow-x-hidden`}
       >
-        {children}
+        <ToastProvider>{children}</ToastProvider>
       </body>
     </html>
   );

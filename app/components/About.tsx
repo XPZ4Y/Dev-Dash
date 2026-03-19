@@ -56,11 +56,11 @@ export default function About() {
               <strong className="text-brand-black bg-yellow-300 px-1 selection:bg-brand-red">
                 FutureSprint
               </strong>{" "}
-              is an annual hackathon held by the{" "}
+              will be an annual hackathon held by the{" "}
               <strong className="text-brand-black border-b-2 border-brand-red">
-                School Of Engineering, St Aloysius
+                School Of Engineering, St Aloysius. 
               </strong>
-              .
+               .Hosted by the School of Engineering and the School of Information Science and Technology.
             </p>
             <p className="text-brand-darkGray text-base sm:text-lg leading-relaxed font-medium">
               Marked by its massive hype, the presence of multiple MNCs, and the
