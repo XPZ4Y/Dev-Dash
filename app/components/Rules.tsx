@@ -12,7 +12,7 @@ const Rules = () => {
             <div>
               <h3 className="text-xl font-bold mb-2">1. Team Formation</h3>
               <p>
-                Teams can consist of 1 to 4 members. All participants{" "}
+                Teams can consist of 3 to 4 members. All participants{" "}
                 <span className="highlight">must be registered</span> for the
                 hackathon.
               </p>
